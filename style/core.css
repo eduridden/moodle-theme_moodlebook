@@ -277,6 +277,42 @@ select,input,button,textarea{
 	margin:1em 0;
 }
 
+#back-to-top {
+	position: fixed;
+	bottom: 32px;
+	right: 40px;
+	text-align: center;
+	cursor: pointer;
+	opacity: .5;
+	filter:alpha(opacity=50);
+	display:none;
+}
+
+#back-to-top a.arrow {
+	padding: 5px 10px;
+	font-size: 36px;
+	color: #333;
+	background: #EEE;
+	border: 1px solid #CCC;
+	border-bottom: 1px solid #AAA;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#back-to-top a.text {
+	display: block;
+	background: white;
+	visibility: hidden;
+	position: relative;
+	top: 10px;}
+
+#back-to-top a {
+	text-decoration: none;
+	border: 0;
+	outline: none;
+}
+
 /* @end */
 
 /* @group Performance Info */
