@@ -1,0 +1,68 @@
+.block{
+	border-style:none;
+}
+
+.block .calendar-controls .previous {
+	background:transparent url([[pix:theme|previous]]) no-repeat left top; 
+	height:19px;
+}
+
+.block .calendar-controls .next {
+	background:transparent url([[pix:theme|next]]) no-repeat right top;
+}
+
+.block .header {
+	border-width:0 1px;
+}
+
+.block .header h2 {
+	background:#f2f2f2;
+	color:#000;
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	font-size:11px;
+	letter-spacing:-0.5px;
+	border-top:  1px solid #e2e2e2;
+	padding: 5px;
+}
+
+.block .header .block_action {
+	margin:4px 5px;
+}
+
+.block .commands {
+	clear:both;
+	height:16px;
+	padding:4px;
+}
+
+.block .content{
+	padding:5px 10px;
+}
+
+.block_login label {
+	font-size:0.85em;
+	display:block;
+}
+
+.block_login .fld input {
+	width:95%;
+	margin:1px 0 5px;
+	padding:2px;
+}
+
+.block_login .btn {
+	padding:4px 0;
+}
+
+.block_login .footer {
+	font-size:0.9em;
+	padding:5px 0 3px;
+}
+
+.block_calendar_month .content {
+	padding:5px;
+}
+
+.block_course_summary .content {
+	padding:10px;
+}

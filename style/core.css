@@ -1,0 +1,355 @@
+/* @group Core */
+
+html{
+	background-color:[[setting:backgroundcolor]];
+}
+
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,input,textarea{
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,p{
+	text-shadow:0 1px 0 #FFF;
+}
+
+body input{
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+}
+
+select,input,button,textarea{
+	font-size:0.9em;
+}
+
+/* @end */
+
+/* @group Header */
+
+#page {
+	width: 985px !important;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#page-header-wrapper{
+	margin:0 50px;
+}
+
+#page-header{
+	float:none;
+	background:#edeff5 url([[pix:theme|bg-header]]) repeat-x scroll center bottom;
+	margin-right:0;
+	position:relative;
+	border-right: 1px solid #cbcbcb;
+	width: 984px !important;
+}
+
+#page-header .logininfo {
+	font-size: .75em;
+	padding-top: 50px;
+	float: right;
+	text-align: right;
+}
+#page-header .sitelogo {
+	float:left;
+	margin:0.75em 0;
+}
+
+#page-header .headermain{
+	color:#000;
+	font-size:2em;
+	font-weight:700;
+	letter-spacing:-1px;
+	text-decoration:none;
+	text-transform:none;
+	margin:0.75em 20px;
+	position:absoulte;
+	left:0.5em;
+	top:50px;
+}
+
+#page-header .headermenu a:hover{
+	color:#C30;
+}
+
+#page-site-index .headermain{
+	font-size: 2.0em;
+	margin:0.85em 0;
+}
+
+#logo {
+	background:#39589a url([[pix:theme|logo]]) no-repeat top left;
+	width:  150px;
+	height:  25px;
+	float: left;
+	margin-top: 8px;
+}
+/* @group Profile */
+
+#header-profileoptions ul{
+	margin-right:4px;
+}
+
+#header-profileoptions ul li{
+	display:inline;
+	padding-left:5px;
+	font-size:1.3em;
+}
+
+.headermenu{
+	font-size:1em;
+	margin:0 -40px 0 0;
+}
+
+.loginform_row{
+	padding:0 0 5px;
+}
+
+/* @end */
+
+/* @group Menu Navigation */
+
+#page-navigation{
+	font-size:1.1em;
+	background-image:url();
+	height:36px;
+	margin:0;
+	padding:0 40px;
+}
+
+#page-navigation li{
+	list-style:none;
+	float:left;
+}
+
+#page-navigation a{
+	display:block;
+	padding:5px 10px;
+}
+
+.navbutton{
+	padding-top:6px;
+}
+
+/* @end */
+
+/* @group Breadcrumb */
+
+.navbar{
+	font-size:.9em;
+	background-color:#F0F0F0;
+	border-bottom:1px solid #cbcbcb;
+	margin:0;
+	padding:0 10px;
+	border-right: 1px solid #cbcbcb;
+}
+
+.navbar .breadcrumb{
+	font-size:1em;
+	font-weight:700;
+	padding:6px;
+}
+
+.breadcrumb a,a:link,a:active{
+	color:#1D8AC3;
+}
+
+.sep{
+	background:url([[pix:theme|breadcrumb_arrow]]) no-repeat scroll 100% 50%;
+	margin-right:5px;
+	padding:0.98em 7px;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Content */
+
+.headingblock,h2.headingblock{
+	border-width:1px;
+	margin:0;
+	padding:5px;
+}
+
+#page-content-wrapper{
+
+}
+
+/* @end */
+
+/* @group Calendar */
+
+.minicalendar td,.minicalendar th{
+	border-color:#EEE;
+	border-width:0;
+}
+	
+.calendartab th,.calendartable td{
+	border-width:0;
+}
+
+/* @end */
+
+/* @group Tabs */
+
+.tabtree .tabrow0 li.here a{
+	background:#fff url([[pix:theme|gradient-sb]]) repeat-x 0 0;
+}
+
+.tabtree .tabrow0 .tabrow1 li a{
+	background:none !important;
+}
+
+/* @end */
+
+/* @group Users */
+
+.userinfobox .content{
+	background:url([[pix:theme|gradient-sb]]) repeat-x 0 0;
+	border-width:2px;
+}
+
+/* @end */
+
+/* @group Buttons */
+
+.navbar input, submit, button {
+	background-color: #eeeeee;
+	background:#edeff5 url([[pix:theme|button]]) repeat scroll;
+	background-position: 0pt 0pt;
+	border: 1px solid;
+	border-top-color: #999999;
+	border-right-color-value: #999999;
+	border-left-color-value: #999999;
+	border-bottom-color: #888888;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: normal;
+	padding-top: 2px;
+	padding-right: 6px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: top;
+	white-space: nowrap;
+	margin-top: -3px;
+}
+
+/* @end */
+
+/* @group Forms */
+
+.mform fieldset{
+	border-color:#ddd;
+}
+
+.mform legend{
+	border:1px solid #ddd;
+	background:url([[pix:theme|gradient-sb]]) repeat-x 0 -25%;
+	padding:2px 7px;
+}
+
+.mform .fitem .felement {
+	margin-left: 0px; 
+	margin-right: 0px; 
+	width: 100%;
+}
+
+.mform .fitem fieldset.felement{
+	float:left;
+}
+
+.mform .fitem .fitemtitle{
+	width:30%;
+}
+
+/* @end */
+
+/* @group Footer */
+
+#page-footer{
+	width:100%;
+	margin:25px 0;
+}
+
+#page-footer .logininfo{
+	margin:1em 0;
+}
+
+/* @end */
+
+/* @group Performance Info */
+#page-footer .performanceinfo ul {
+	text-align: center; 
+	margin: 0 auto;
+}
+
+#page-footer .performanceinfo li{
+	display:block;
+	list-style-type:none;
+	float:left;
+	padding:5px 0;
+	width:25%;
+}
+
+#page-footer .performanceinfo li var{
+	font-size:1.3em;
+	font-weight:700;
+}
+
+#page-footer .performanceinfo .green{
+	color:#588E13 !important;
+}
+
+#page-footer .performanceinfo .blue{
+	color:#3769A0 !important;
+}
+
+#page-footer .performanceinfo .purple{
+	color:#953FA1 !important;
+}
+
+#page-footer .performanceinfo .orange{
+	color:#D28C00 !important;
+}
+
+#page-footer .performanceinfo .red{
+	color:#B72F09 !important;
+}
+
+#page-footer .performanceinfo .white{
+	color:#FFF !important;
+}
+
+#page-footer .performanceinfo span{
+	color:#fff;
+}
+
+#page-footer .performanceinfo{
+	-moz-border-radius-topleft:15px;
+	-moz-border-radius-topright:15px;
+	-webkit-border-top-left-radius:15px 15px;
+	-webkit-border-top-right-radius:15px 15px;
+	bottom:0;
+	left:-290px !important;
+	position:fixed;
+	background-color:#222;
+	width:580px !important;
+	border-width:12px 12px medium;margin:0 50% !important;
+}
+
+/* @end */
+
+/* @group Comments */
+
+.comment-list li {
+	background: #edeff4 url([[pix:theme|comments]]) no-repeat top left !important;
+	padding: 5px;
+	padding-top: 10px;
+}
+
+.block_comments .content {
+	padding: 2px !important;
+}
+/* @end */
