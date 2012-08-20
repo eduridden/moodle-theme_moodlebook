@@ -21,7 +21,7 @@ $THEME->parents = array('canvas','base');
 ////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('menubar', 'selected', 'core', 'course', 'mods', 'blocks', 'pagelayout');
+$THEME->sheets = array('awesomebar', 'selected', 'core', 'course', 'mods', 'blocks', 'pagelayout');
 
 ////////////////////////////////////////////////////
 // Name of the stylesheet(s) you've including in 
