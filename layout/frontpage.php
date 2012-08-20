@@ -1,13 +1,46 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Frontpage layout for the moodlebook theme
+ *
+ * @package    theme
+ * @subpackage moodlebook
+ * @copyright  Julian Ridden
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+// get lib file
+
 require_once ($CFG->dirroot."/theme/moodlebook/lib.php");
 
-$hassidepre = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
-$hassidepost = $PAGE->blocks->region_has_content('side-post', $OUTPUT);
+// $PAGE->blocks->region_has_content('region_name') doesn't work as we do some sneaky stuff 
+// to hide nav and/or settings blocks if requested
+$blocks_side_pre = trim($OUTPUT->blocks_for_region('side-pre'));
+$hassidepre = strlen($blocks_side_pre);
+$blocks_side_post = trim($OUTPUT->blocks_for_region('side-post'));
+$hassidepost = strlen($blocks_side_post);
 
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
+moodlebook_initialise_awesomebar($PAGE);
+
 $bodyclasses = array();
+
 if ($hassidepre && !$hassidepost) {
     $bodyclasses[] = 'side-pre-only';
 } else if ($hassidepost && !$hassidepre) {
@@ -22,9 +55,32 @@ if (!empty($PAGE->theme->settings->footnote)) {
     $footnote = '<!-- There was no custom footnote set -->';
 }
 
+if (check_browser_version("MSIE", "0")) {
+    header('X-UA-Compatible: IE=edge');
+}
 echo $OUTPUT->doctype() ?>
 <html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
+    <title><?php echo $PAGE->title ?></title>
+    <link rel="shortcut icon" href="<?php echo $OUTPUT->pix_url('favicon', 'theme')?>" />
+    <meta name="description" content="<?php echo strip_tags(format_text($SITE->summary, FORMAT_HTML)) ?>" />
+    <?php echo $OUTPUT->standard_head_html() ?>
+    <script type="text/javascript">
+    YUI().use('node', function(Y) {
+        window.thisisy = Y;
+    	Y.one(window).on('scroll', function(e) {
+    	    var node = Y.one('#back-to-top');
+
+    	    if (Y.one('window').get('docScrollY') > Y.one('#page-content-wrapper').getY()) {
+    		    node.setStyle('display', 'block');
+    	    } else {
+    		    node.setStyle('display', 'none');
+    	    }
+    	});
+
+    });
+    </script>
+</head>
     <title><?php echo $PAGE->title ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->pix_url('favicon', 'theme')?>" />
     <meta name="description" content="<?php echo strip_tags(format_text($SITE->summary, FORMAT_HTML)) ?>" />
@@ -101,7 +157,7 @@ echo $OUTPUT->doctype() ?>
                 <div id="region-main-wrap">
                     <div id="region-main">
                         <div class="region-content">
-                            <?php echo method_exists($OUTPUT, "main_content")?$OUTPUT->main_content():core_renderer::MAIN_CONTENT_TOKEN ?>
+                            <?php echo $OUTPUT->main_content() ?>
                         </div>
                     </div>
                 </div>
