@@ -49,32 +49,4 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $settings->add($setting);
     
-    // Show user profile picture
-    $name = 'theme_moodlebook/showuserpicture';
-    $title = get_string('showuserpicture','theme_moodlebook');
-    $description = get_string('showuserpicturedesc', 'theme_moodlebook');
-    $default = 0;
-    $choices = array(1=>'Yes', 0=>'No');
-    $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
-    $settings->add($setting);
-
-    // Add custom menu to Awesomebar
-    $name = 'theme_moodlebook/custommenuinawesomebar';
-    $title = get_string('custommenuinawesomebar','theme_moodlebook');
-    $description = get_string('custommenuinawesomebardesc', 'theme_moodlebook');
-    $default = 0;
-    $choices = array(1=>'Yes', 0=>'No');
-    $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
-    $settings->add($setting);
-
-    // Place custom menu after Awesomebar
-    $name = 'theme_moodlebook/custommenuafterawesomebar';
-    $title = get_string('custommenuafterawesomebar','theme_moodlebook');
-    $description = get_string('custommenuafterawesomebardesc', 'theme_moodlebook');
-    $default = 0;
-    $choices = array(0=>'No', 1=>'Yes');
-    $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
-    $settings->add($setting);
-   
-
-}
+    }
