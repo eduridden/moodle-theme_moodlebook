@@ -50,3 +50,4 @@ $string['hidesettingsblock'] = 'Hide Settings block';
 $string['hidesettingsblockdesc'] = 'This setting removes the standard Settings block from all pages.';
 $string['hidenavigationblock'] = 'Hide Navigation block';
 $string['hidenavigationblockdesc'] = 'This setting removes the standard Navigation block from all pages.';
+$string['custommenuafterawesomebardesc'] = 'Places custom menu after Awesomebar content.  Otherwise, it will appear before the Settings menus.  (Only applicable if previous option is enabled.)';
