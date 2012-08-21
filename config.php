@@ -21,7 +21,7 @@ $THEME->parents = array('canvas','base');
 ////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('awesomebar', 'selected', 'core', 'course', 'mods', 'blocks', 'pagelayout');
+$THEME->sheets = array('awesomebar', 'selected', 'core', 'mods', 'blocks', 'pagelayout');
 
 ////////////////////////////////////////////////////
 // Name of the stylesheet(s) you've including in 
@@ -43,80 +43,7 @@ $THEME->editor_sheets = array('editor');
 // body of the editor.
 ////////////////////////////////////////////////////
 
-$THEME->layouts = array(
-    'base' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'general' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'course' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post'
-    ),
-    'coursecategory' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'incourse' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'frontpage' => array(
-        'file' => 'frontpage.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'admin' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre'),
-        'defaultregion' => 'side-pre',
-    ),
-    'mydashboard' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-        'options' => array('langmenu'=>true),
-    ),
-    'mypublic' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'login' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('langmenu'=>true),
-    ),
-    'popup' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'noblocks'=>true, 'nonavbar'=>true),
-    ),
-    'frametop' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true),
-    ),
-    'maintenance' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true),
-    ),
-    'embedded' => array(
-        'file' => 'embedded.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true),
-    ),
-    
-);
+
 
 ///////////////////////////////////////////////////////////////
 // These are all of the possible layouts in Moodle. The
