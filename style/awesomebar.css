@@ -313,14 +313,18 @@ ul.dropdown a:active,ul.dropdown ul li:hover > a.dir:hover{
 	text-align: center;
 }
 
-#custommenu ul.dropdown span {
+#custommenu ul li a{
 	border:1px solid #cbcbcb;
-	margin-right: 5px;
 	background: #e5e8f2;
+	padding: 6px;
+}
+
+#custommenu ul li {
+	margin-right: 5px;
+	
 }
 
 #custommenu ul.dropdown a:hover{
-	border:none;
 	background-color:#c5cce7;
 	color:#fff;
 }
@@ -350,23 +354,6 @@ ul.dropdown span.customitem {
 	padding:0;
 	border:0; 
 	width: auto;
-}
-
-ul.dropdown span.customitem a {
-	padding:6px 20px 6px 20px;
-}
-
-#custommenu ul.dropdown ul {
-	padding:0;
-	width:185px;
-}
-
-#custommenu ul.dropdown ul a {
-	padding:5px;
-}
-
-#custommenu ul.dropdown > li span a {
-	height:20px;
 }
 
 #custommenu ul.dropdown *.open,
