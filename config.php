@@ -43,7 +43,11 @@ $THEME->editor_sheets = array('editor');
 // body of the editor.
 ////////////////////////////////////////////////////
 
-
+'report' => array(
+        'file' => 'general.php',
+        'regions' => array('side-pre'),
+        'defaultregion' => 'side-pre',
+    ),
 
 ///////////////////////////////////////////////////////////////
 // These are all of the possible layouts in Moodle. The
