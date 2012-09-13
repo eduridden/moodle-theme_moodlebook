@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->version   = 2012080300; // The current module version (Date: YYYYMMDDXX)
-$plugin->requires  = 2012062500; // Requires this Moodle version
+$plugin->requires  = 2012061700; // Requires this Moodle version
 $plugin->component = 'theme_moodlebook'; // Full name of the plugin (used for diagnostics)
 $plugin->maturity = 'stable'; // The current stability of this version (used for diagnostics)
-$plugin->release = '1.1'; // The release nam of this version (used for diagnostics)
+$plugin->release = '1.2'; // The release nam of this version (used for diagnostics)
