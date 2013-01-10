@@ -1,42 +1,52 @@
 <?php
-if (!empty($CFG->themedir) and file_exists("$CFG->themedir/moodlebook")) {
-    require_once ($CFG->themedir."/moodlebook/lib.php");
-} else {
-    require_once ($CFG->dirroot."/theme/moodlebook/lib.php");
-}
 
-$hassidepre = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
-$hassidepost = $PAGE->blocks->region_has_content('side-post', $OUTPUT);
+$hasheading = ($PAGE->heading);
+$hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
+$hasfooter = (empty($PAGE->layout_options['nofooter']));
+$hassidepre = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-pre', $OUTPUT));
+$hassidepost = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-post', $OUTPUT));
+$haslogininfo = (empty($PAGE->layout_options['nologininfo']));
+
+$showsidepre = ($hassidepre && !$PAGE->blocks->region_completely_docked('side-pre', $OUTPUT));
+$showsidepost = ($hassidepost && !$PAGE->blocks->region_completely_docked('side-post', $OUTPUT));
 
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
-moodlebook_initialise_awesomebar($PAGE);
+$hasfootnote = (!empty($PAGE->theme->settings->footnote));
+
+$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
+if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
+    $courseheader = $OUTPUT->course_header();
+    $coursecontentheader = $OUTPUT->course_content_header();
+    if (empty($PAGE->layout_options['nocoursefooter'])) {
+        $coursecontentfooter = $OUTPUT->course_content_footer();
+        $coursefooter = $OUTPUT->course_footer();
+    }
+}
 
 $bodyclasses = array();
-
-if(!empty($PAGE->theme->settings->useeditbuttons) && $PAGE->user_allowed_editing()) {
-    decaf_initialise_editbuttons($PAGE);
-    $bodyclasses[] = 'decaf_with_edit_buttons';
-}
-
-
-if ($hassidepre && !$hassidepost) {
-    $bodyclasses[] = 'side-pre-only';
-} else if ($hassidepost && !$hassidepre) {
-    $bodyclasses[] = 'side-post-only';
-} else if (!$hassidepost && !$hassidepre) {
+if ($showsidepre && !$showsidepost) {
+    if (!right_to_left()) {
+        $bodyclasses[] = 'side-pre-only';
+    } else {
+        $bodyclasses[] = 'side-post-only';
+    }
+} else if ($showsidepost && !$showsidepre) {
+    if (!right_to_left()) {
+        $bodyclasses[] = 'side-post-only';
+    } else {
+        $bodyclasses[] = 'side-pre-only';
+    }
+} else if (!$showsidepost && !$showsidepre) {
     $bodyclasses[] = 'content-only';
 }
-
-if (!empty($PAGE->theme->settings->footnote)) {
-    $footnote = $PAGE->theme->settings->footnote;
-} else {
-    $footnote = '<!-- There was no custom footnote set -->';
+if ($hascustommenu) {
+    $bodyclasses[] = 'has_custom_menu';
 }
 
 echo $OUTPUT->doctype() ?>
-<html <?php echo $OUTPUT->htmlattributes() ?>>
+<html <?php echo $OUTPUT->htmlattributes() ?>
 <head>
     <title><?php echo $PAGE->title ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->pix_url('favicon', 'theme')?>" />
@@ -125,8 +135,10 @@ echo $OUTPUT->doctype() ?>
                 <div id="region-main-wrap">
                     <div id="region-main">
                         <div class="region-content">
-                            <?php echo method_exists($OUTPUT, "main_content")?$OUTPUT->main_content():core_renderer::MAIN_CONTENT_TOKEN ?>
-                        </div>
+                       		<?php echo $coursecontentheader; ?>
+                      	 	<?php echo $OUTPUT->main_content() ?>
+                      	 	<?php echo $coursecontentfooter; ?>
+                   		</div>
                     </div>
                 </div>
                 
@@ -156,13 +168,14 @@ echo $OUTPUT->doctype() ?>
 <!-- START OF FOOTER -->
 
     <div id="page-footer">
-		<div class="footnote"><?php echo $footnote; ?></div>
+		<?php if ($hasfootnote) { ?>
+			<div id="footnote"><?php echo $PAGE->theme->settings->footnote;?></div>
+        <?php } ?>
         <p class="helplink">
         <?php echo page_doc_link(get_string('moodledocslink')) ?>
         </p>
 
         <?php
-        echo $OUTPUT->login_info();
         echo $OUTPUT->home_link();
         echo $OUTPUT->standard_footer_html();
         ?>
