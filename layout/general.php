@@ -73,7 +73,7 @@ echo $OUTPUT->doctype() ?>
 
     <div id="menubar">
     	<div id="menushell">
-    	<div id="logo"></div>
+    	<a href="<?php echo $CFG->wwwroot; ?>"><div id="logo"></div></a>
     	<?php
     	if($this->page->pagelayout != 'maintenance') {
     	$topsettings = $this->page->get_renderer('theme_moodlebook','topsettings');
