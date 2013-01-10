@@ -2,12 +2,17 @@
 
 class theme_moodlebook_core_renderer extends core_renderer {
 
+    protected $really_editing = false;
+
+    public function set_really_editing($editing) {
+        $this->really_editing = $editing;
+    }
     /**
      * Outputs the page's footer
      * @return string HTML fragment
      */
     public function footer() {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $output = $this->container_end_all(true);
 
@@ -28,17 +33,125 @@ class theme_moodlebook_core_renderer extends core_renderer {
                 $performanceinfo = moodlebook_performance_output($perf);
             }
         }
-		$perftoken = (property_exists($this, "unique_performance_info_token"))?$this->unique_performance_info_token:self::PERFORMANCE_INFO_TOKEN;
-		$endhtmltoken = (property_exists($this, "unique_end_html_token"))?$this->unique_end_html_token:self::END_HTML_TOKEN;
-		
-		$footer = str_replace($perftoken, $performanceinfo, $footer);
 
-		$footer = str_replace($endhtmltoken, $this->page->requires->get_end_code(), $footer);
+        $perftoken = (property_exists($this, "unique_performance_info_token"))?$this->unique_performance_info_token:self::PERFORMANCE_INFO_TOKEN;
+        $endhtmltoken = (property_exists($this, "unique_end_html_token"))?$this->unique_end_html_token:self::END_HTML_TOKEN;
+
+        $footer = str_replace($perftoken, $performanceinfo, $footer);
+
+        $footer = str_replace($endhtmltoken, $this->page->requires->get_end_code(), $footer);
 
         $this->page->set_state(moodle_page::STATE_DONE);
 
+        if(!empty($this->page->theme->settings->persistentedit) && property_exists($USER, 'editing') && $USER->editing && !$this->really_editing) {
+            $USER->editing = false;
+        }
+
         return $output . $footer;
     }
+
+
+	public function login_info($withlinks = null) {
+        global $USER, $CFG, $DB, $SESSION;
+
+        if (during_initial_install()) {
+            return '';
+        }
+
+        if (is_null($withlinks)) {
+            $withlinks = empty($this->page->layout_options['nologinlinks']);
+        }
+
+        $loginpage = ((string)$this->page->url === get_login_url());
+        $course = $this->page->course;
+        if (session_is_loggedinas()) {
+            $realuser = session_get_realuser();
+            $fullname = fullname($realuser, true);
+            if ($withlinks) {
+                $realuserinfo = " [<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".sesskey()."\">$fullname</a>] ";
+            } else {
+                $realuserinfo = " ";
+            }
+        } else {
+            $realuserinfo = '';
+        }
+
+        $loginurl = get_login_url();
+
+        if (empty($course->id)) {
+            // $course->id is not defined during installation
+            return '';
+        } else if (isloggedin()) {
+            $context = context_course::instance($course->id);
+
+            $fullname = fullname($USER, true);
+            // Since Moodle 2.0 this link always goes to the public profile page (not the course profile page)
+            if ($withlinks) {
+                $username = "<a href=\"$CFG->wwwroot/user/profile.php?id=$USER->id\">$fullname</a>";
+            } else {
+                $username = $fullname;
+            }
+            if (is_mnet_remote_user($USER) and $idprovider = $DB->get_record('mnet_host', array('id'=>$USER->mnethostid))) {
+                if ($withlinks) {
+                    $username .= " from <a href=\"{$idprovider->wwwroot}\">{$idprovider->name}</a>";
+                } else {
+                    $username .= " from {$idprovider->name}";
+                }
+            }
+            if (isguestuser()) {
+                $loggedinas = $realuserinfo.get_string('loggedinasguest');
+                if (!$loginpage && $withlinks) {
+                    $loggedinas .= " (<a href=\"$loginurl\">".get_string('login').'</a>)';
+                }
+            } else if (is_role_switched($course->id)) { // Has switched roles
+                $rolename = '';
+                if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
+                    $rolename = ': '.format_string($role->name);
+                }
+                $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename;
+                if ($withlinks) {
+                    $loggedinas .= " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\">".get_string('switchrolereturn').'</a>)';
+                }
+            } else {
+				$loggedinas = $realuserinfo.$username;
+				$logouticon = html_writer::empty_tag('img', array('alt' => get_string('logout'), 'src' =>$this->pix_url('logout_icon', 'theme')));
+                if ($withlinks) {
+                    $loggedinas .= " <a href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\">$logouticon</a>";
+                }
+            }
+        } else {
+            $loggedinas = get_string('loggedinnot', 'moodle');
+            if (!$loginpage && $withlinks) {
+                $loggedinas .= " (<a href=\"$loginurl\">".get_string('login').'</a>)';
+            }
+        }
+
+        $loggedinas = '<div class="logininfo">'.$loggedinas.'</div>';
+
+        if (isset($SESSION->justloggedin)) {
+            unset($SESSION->justloggedin);
+            if (!empty($CFG->displayloginfailures)) {
+                if (!isguestuser()) {
+                    if ($count = count_login_failures($CFG->displayloginfailures, $USER->username, $USER->lastlogin)) {
+                        $loggedinas .= '&nbsp;<div class="loginfailures">';
+                        if (empty($count->accounts)) {
+                            $loggedinas .= get_string('failedloginattempts', '', $count);
+                        } else {
+                            $loggedinas .= get_string('failedloginattemptsall', '', $count);
+                        }
+                        if (file_exists("$CFG->dirroot/report/log/index.php") and has_capability('report/log:view', context_system::instance())) {
+                            $loggedinas .= ' (<a href="'.$CFG->wwwroot.'/report/log/index.php'.
+                                                 '?chooselog=1&amp;id=1&amp;modid=site_errors">'.get_string('logs').'</a>)';
+                        }
+                        $loggedinas .= '</div>';
+                    }
+                }
+            }
+        }
+
+        return $loggedinas;
+    }
+
 
         /**
      * The standard tags (typically performance information and validation links,
@@ -60,6 +173,12 @@ class theme_moodlebook_core_renderer extends core_renderer {
             // The legacy theme is in use print the notification
             $output .= html_writer::tag('div', get_string('legacythemeinuse'), array('class'=>'legacythemeinuse'));
         }
+
+        // Get links to switch device types (only shown for users not on a default device)
+        if(method_exists($this, 'theme_switch_links')) {
+            $output .= $this->theme_switch_links();
+        }
+        
        // if (!empty($CFG->debugpageinfo)) {
        //     $output .= '<div class="performanceinfo">This page is: ' . $this->page->debug_summary() . '</div>';
        // }
@@ -72,6 +191,9 @@ class theme_moodlebook_core_renderer extends core_renderer {
               <li><a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=-1&amp;url1=' . urlencode(qualified_me()) . '">Section 508 Check</a></li>
               <li><a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=0&amp;warnp2n3e=1&amp;url1=' . urlencode(qualified_me()) . '">WCAG 1 (2,3) Check</a></li>
             </ul></div>';
+        }
+        if (!empty($CFG->additionalhtmlfooter)) {
+            $output .= "\n".$CFG->additionalhtmlfooter;
         }
         return $output;
     }
@@ -91,7 +213,7 @@ class theme_moodlebook_core_renderer extends core_renderer {
             return '';
         }
         // Initialise this custom menu
-        $content = html_writer::start_tag('ul', array('class'=>'dropdown dropdown-horizontal'));
+        $content = html_writer::start_tag('ul', array('class'=>'dropdown dropdown-horizontal moodlebook-custom-menu'));
         // Render each child
         foreach ($menu->get_children() as $item) {
             $content .= $this->render_custom_menu_item($item);
@@ -121,13 +243,17 @@ class theme_moodlebook_core_renderer extends core_renderer {
         if ($menunode->has_children()) {
             // If the child has menus render it as a sub menu
             $submenucount++;
-            if ($menunode->get_url() !== null) {
-                $url = $menunode->get_url();
-            } else {
-                $url = '#cm_submenu_'.$submenucount;
+            $extra = '';
+            if ($menunode->get_url() === null) {
+                $extra = ' customitem-nolink';
             }
-            $content .= html_writer::start_tag('span', array('class'=>'customitem'));
-            $content .= html_writer::link($url, $menunode->get_text(), array('title'=>$menunode->get_title()));
+            $content .= html_writer::start_tag('span', array('class'=>'customitem'.$extra));
+            if ($menunode->get_url() !== null) {
+                $content .= html_writer::link($menunode->get_url(), $menunode->get_text(), array('title'=>$menunode->get_title()));
+            } else {
+                $content .= $menunode->get_text();
+            }
+            
             $content .= html_writer::end_tag('span');
             $content .= html_writer::start_tag('ul');
             foreach ($menunode->get_children() as $menunode) {
@@ -142,7 +268,7 @@ class theme_moodlebook_core_renderer extends core_renderer {
             } else {
                 $url = '#';
             }
-            $content .= html_writer::link($url, $menunode->get_text(), array('title'=>$menunode->get_title()));
+            $content .= html_writer::link($url, $menunode->get_text(), array('title'=>$menunode->get_title(), 'class'=>'customitem-no-children'));
         }
         $content .= html_writer::end_tag('li');
         // Return the sub menu
@@ -193,31 +319,6 @@ class theme_moodlebook_core_renderer extends core_renderer {
         return $content;
     }
 
-    /**
-     * blocks_for_region() overrides core_renderer::blocks_for_region()
-     *  in moodlelib.php. Returns a string
-     * values ready for use.
-     *
-     * @return string
-     */
-    public function blocks_for_region($region) {
-        $blockcontents = $this->page->blocks->get_content_for_region($region, $this);
-        $output = '';
-        foreach ($blockcontents as $bc) {
-            if ($bc instanceof block_contents) {
-                if (!($bc->attributes['class'] == 'block_settings  block' && $this->page->theme->settings->hidesettingsblock)
-                        && !($bc->attributes['class'] == 'block_navigation  block' && $this->page->theme->settings->hidenavigationblock)) {
-                    $output .= $this->block($bc, $region);
-                }
-            } else if ($bc instanceof block_move_target) {
-                $output .= $this->block_move_target($bc);
-            } else {
-                throw new coding_exception('Unexpected type of thing (' . get_class($bc) . ') found in list of block contents.');
-            }
-        }
-        return $output;
-    }
-
 }
 
 class theme_moodlebook_topsettings_renderer extends plugin_renderer_base {
@@ -225,6 +326,11 @@ class theme_moodlebook_topsettings_renderer extends plugin_renderer_base {
     public function settings_tree(settings_navigation $navigation) {
         global $CFG;
         $content = $this->navigation_node($navigation, array('class' => 'dropdown  dropdown-horizontal'));
+        return $content;
+    }
+    public function settings_search_box() {
+        global $CFG;
+        $content = "";
         if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
             $content .= $this->search_form(new moodle_url("$CFG->wwwroot/$CFG->admin/search.php"), optional_param('query', '', PARAM_RAW));
         }
@@ -252,7 +358,8 @@ class theme_moodlebook_topsettings_renderer extends plugin_renderer_base {
 
     protected function navigation_node(navigation_node $node, $attrs=array()) {
         global $PAGE;
-		$items = $node->children;
+        static $subnav;
+        $items = $node->children;
 
         // exit if empty, we don't want an empty ul element
         if ($items->count() == 0) {
@@ -261,15 +368,12 @@ class theme_moodlebook_topsettings_renderer extends plugin_renderer_base {
 
         // array of nested li elements
         $lis = array();
-        $dummypage = new moodlebook_dummy_page();
-        $dummypage->set_context(get_context_instance(CONTEXT_SYSTEM));
-		$dummypage->set_url($PAGE->url);
         foreach ($items as $item) {
             if (!$item->display) {
                 continue;
             }
 
-            $isbranch = ($item->children->count() > 0 || $item->nodetype == navigation_node::NODETYPE_BRANCH);
+            $isbranch = ($item->children->count() > 0 || $item->nodetype == navigation_node::NODETYPE_BRANCH || (property_exists($item, 'isexpandable') && $item->isexpandable));
             $hasicon = (!$isbranch && $item->icon instanceof renderable);
 
             if ($isbranch) {
@@ -279,12 +383,21 @@ class theme_moodlebook_topsettings_renderer extends plugin_renderer_base {
             $content = $this->output->render($item);
             if(substr($item->id, 0, 17)=='expandable_branch' && $item->children->count()==0) {
                 // Navigation block does this via AJAX - we'll merge it in directly instead
-                $subnav = new moodlebook_expand_navigation($dummypage, $item->type, $item->key);
+                if(!$subnav) {
+                    // Prepare dummy page for subnav initialisation
+                    $dummypage = new moodlebook_dummy_page();
+                    $dummypage->set_context(get_context_instance(CONTEXT_SYSTEM));
+                    $dummypage->set_url($PAGE->url);
+                    $subnav = new moodlebook_expand_navigation($dummypage, $item->type, $item->key);
+                } else {
+                    // re-use subnav so we don't have to reinitialise everything
+                    $subnav->expand($item->type, $item->key);
+                }
                 if (!isloggedin() || isguestuser()) {
                     $subnav->set_expansion_limit(navigation_node::TYPE_COURSE);
                 }
                 $branch = $subnav->find($item->key, $item->type);
-                $content .= $this->navigation_node($branch);
+                if($branch!==false) $content .= $this->navigation_node($branch);
             } else {
                 $content .= $this->navigation_node($item);
             }
@@ -324,7 +437,6 @@ class theme_moodlebook_topsettings_renderer extends plugin_renderer_base {
 
         return $content;
     }
-
 }
 
 ?>

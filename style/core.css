@@ -77,11 +77,11 @@ select,input,button,textarea{
 }
 
 #logo {
-	background:#39589a url([[pix:theme|logo]]) no-repeat top left;
+	background:#3e509c url([[pix:theme|logo]]) no-repeat top left;
 	width:  150px;
 	height:  25px;
 	float: left;
-	margin-top: 8px;
+	margin-right: 10px;
 }
 /* @group Profile */
 
@@ -102,6 +102,33 @@ select,input,button,textarea{
 
 .loginform_row{
 	padding:0 0 5px;
+}
+
+#profiletop .logininfo {
+	float: right;
+	margin-top: 5px;
+	font-size: .9em;
+	
+}
+
+#profiletop {
+	text-align: right;
+	margin-top: 3px;
+	width: auto;
+}
+
+#profiletop .logininfo:hover {
+	background: #4c5fa5;
+}
+
+#profiletop .logininfo a {
+	color: #D8DFEA;
+}
+
+#profilepic {
+	width:  25px;
+	height: 25px;
+	margin-right: 5px;
 }
 
 /* @end */

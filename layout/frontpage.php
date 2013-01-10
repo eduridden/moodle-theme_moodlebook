@@ -1,5 +1,9 @@
 <?php
-require_once ($CFG->dirroot."/theme/moodlebook/lib.php");
+if (!empty($CFG->themedir) and file_exists("$CFG->themedir/moodlebook")) {
+    require_once ($CFG->themedir."/moodlebook/lib.php");
+} else {
+    require_once ($CFG->dirroot."/theme/moodlebook/lib.php");
+}
 
 $hassidepre = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
 $hassidepost = $PAGE->blocks->region_has_content('side-post', $OUTPUT);
@@ -7,7 +11,16 @@ $hassidepost = $PAGE->blocks->region_has_content('side-post', $OUTPUT);
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
 
+moodlebook_initialise_awesomebar($PAGE);
+
 $bodyclasses = array();
+
+if(!empty($PAGE->theme->settings->useeditbuttons) && $PAGE->user_allowed_editing()) {
+    decaf_initialise_editbuttons($PAGE);
+    $bodyclasses[] = 'decaf_with_edit_buttons';
+}
+
+
 if ($hassidepre && !$hassidepost) {
     $bodyclasses[] = 'side-pre-only';
 } else if ($hassidepost && !$hassidepre) {
@@ -62,7 +75,19 @@ echo $OUTPUT->doctype() ?>
         ?>
     	</div>
     	<?php } ?>
+		
+		<div id="profiletop">
+			<?php
+
+			if (!isloggedin() or isguestuser()) {
+				} else {
+					echo '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$USER->id.'&amp;course='.$COURSE->id.'"><img src="'.$CFG->wwwroot.'/user/pix.php?file=/'.$USER->id.'/f1.jpg" id="profilepic" title="'.$USER->firstname.' '.$USER->lastname.'" alt="'.$USER->firstname.' '.$USER->lastname.'" /></a>';
+			} 
+			echo $OUTPUT->login_info();
+		?>
+		</div>
     	</div>
+		
     </div>
 
 <div id="page">
@@ -76,7 +101,6 @@ echo $OUTPUT->doctype() ?>
 	        <h1 class="headermain"><?php echo $PAGE->heading ?></h1>
     	    <div class="headermenu">
         		<?php
-					echo $OUTPUT->login_info();
     	        	echo $OUTPUT->lang_menu();
 	        	    echo $PAGE->headingmenu;
 		        ?>	    

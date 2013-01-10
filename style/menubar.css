@@ -16,7 +16,7 @@
 
 #menubar{
 	height:35px;
-	background-color:#385799;
+	background-color:#3e509c;
 	margin:0;
 	text-shadow: 0 1px 0 #000;
 	vertical-align: middle;
@@ -31,15 +31,7 @@
 	margin-right: auto;
 }
 
-#menucenter {
 
-	margin-left: 210px;
-	border:  1px solid #000;
-	border-bottom: 0px none;
-	background: #6179af;
-	padding-top: 5px;
-	text-align: left;
-}
 
 #menubar #home, #menubar #menubarNavMenu{
 	float:left;
@@ -132,7 +124,7 @@ ul.dropdown li{
 	line-height:1.5em;
 	vertical-align:middle;
 	background-color:transparent;
-	color:#fff;
+	color: #D8DFEA;
 	zoom:1 !important;
 }
 
@@ -192,7 +184,7 @@ ul.dropdown ul ul span, ul.dropdown ul ul span a, ul.dropdown ul ul li.clickable
 }
 
 ul.dropdown a:link,ul.dropdown a:visited{
-	color:#fff;
+	color:#D8DFEA;
 	text-decoration:none;
 }
 
@@ -200,14 +192,14 @@ ul.dropdown a:hover{
 	border-top-color:#76B900 !important;
 	border-left-color:#5db1e0;
 	background-color:#39589a;
-	color:#fff;
+	color:#D8DFEA;
 }
 
 ul.dropdown li.clickable-with-children > a:hover {
 	border-top-color:#595959 !important;
 }
 
-ul.dropdown ul a.dir:hover{background-color:#4698ca;background-image:url([[pix:theme|ab-arrowon]]);color:#fff;}
+ul.dropdown ul a.dir:hover{background-color:#4698ca;background-image:url([[pix:theme|ab-arrowon]]);color:#D8DFEA;}
 
 ul.dropdown ul ul li{
 	background-color:#6179af;
@@ -250,7 +242,7 @@ ul.dropdown ul a.dir{
 ul.dropdown ul *.open{
 	background-color:#39589a;
 	background-image:url([[pix:theme|ab-arrowover]]);
-	color:#fff;
+	color:#D8DFEA;
 }
 
 ul.dropdown ul a.open:hover{
