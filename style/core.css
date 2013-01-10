@@ -77,7 +77,7 @@ select,input,button,textarea{
 }
 
 #logo {
-	background:#3e509c url([[pix:theme|logo]]) no-repeat top left;
+	background: url([[pix:theme|logo]]) no-repeat top left;
 	width:  150px;
 	height:  25px;
 	float: left;
