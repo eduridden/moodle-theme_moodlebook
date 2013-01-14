@@ -1,29 +1,12 @@
 <?php
 
-$hasheading = ($PAGE->heading);
-$hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
-$hasfooter = (empty($PAGE->layout_options['nofooter']));
-$hassidepre = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-pre', $OUTPUT));
-$hassidepost = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-post', $OUTPUT));
-$haslogininfo = (empty($PAGE->layout_options['nologininfo']));
-
-$showsidepre = ($hassidepre && !$PAGE->blocks->region_completely_docked('side-pre', $OUTPUT));
-$showsidepost = ($hassidepost && !$PAGE->blocks->region_completely_docked('side-post', $OUTPUT));
+$hassidepre = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
+$hassidepost = $PAGE->blocks->region_has_content('side-post', $OUTPUT);
+$showsidepre = $hassidepre && !$PAGE->blocks->region_completely_docked('side-pre', $OUTPUT);
+$showsidepost = $hassidepost && !$PAGE->blocks->region_completely_docked('side-post', $OUTPUT);
 
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = (empty($PAGE->layout_options['nocustommenu']) && !empty($custommenu));
-
-$hasfootnote = (!empty($PAGE->theme->settings->footnote));
-
-$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
-if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
-    $courseheader = $OUTPUT->course_header();
-    $coursecontentheader = $OUTPUT->course_content_header();
-    if (empty($PAGE->layout_options['nocoursefooter'])) {
-        $coursecontentfooter = $OUTPUT->course_content_footer();
-        $coursefooter = $OUTPUT->course_footer();
-    }
-}
 
 $bodyclasses = array();
 if ($showsidepre && !$showsidepost) {
@@ -45,12 +28,14 @@ if ($hascustommenu) {
     $bodyclasses[] = 'has_custom_menu';
 }
 
+$hasfootnote = (!empty($PAGE->theme->settings->footnote));
+
 echo $OUTPUT->doctype() ?>
-<html <?php echo $OUTPUT->htmlattributes() ?>
+<html <?php echo $OUTPUT->htmlattributes() ?>>
 <head>
     <title><?php echo $PAGE->title ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->pix_url('favicon', 'theme')?>" />
-    <meta name="description" content="<?php echo strip_tags(format_text($SITE->summary, FORMAT_HTML)) ?>" />
+    <meta name="description" content="<?php p(strip_tags(format_text($SITE->summary, FORMAT_HTML))) ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
 	<script type="text/javascript">
 	YUI().use('node', function(Y) {
@@ -68,7 +53,7 @@ echo $OUTPUT->doctype() ?>
 	});
 </script>
 </head>
-<body id="<?php echo $PAGE->bodyid ?>" class="<?php echo $PAGE->bodyclasses.' '.join(' ', $bodyclasses) ?>">
+<body id="<?php p($PAGE->bodyid) ?>" class="<?php p($PAGE->bodyclasses.' '.join(' ', $bodyclasses)) ?>">
 <?php echo $OUTPUT->standard_top_of_body_html() ?>
 
     <div id="menubar">
@@ -106,19 +91,15 @@ echo $OUTPUT->doctype() ?>
    
     <div id="page-header" class="clearfix">
 		<div id="page-header-wrapper">
-		
- 	
-	        <h1 class="headermain"><?php echo $PAGE->heading ?></h1>
-    	    <div class="headermenu">
-        		<?php
-    	        	echo $OUTPUT->lang_menu();
-	        	    echo $PAGE->headingmenu;
-		        ?>	    
-	    	</div>
-	    	<?php if ($hascustommenu) { ?>
-      <div id="custommenu"><?php echo $custommenu; ?></div>
- 	<?php } ?>
-	    </div>
+        <h1 class="headermain"><?php echo $PAGE->heading ?></h1>
+        <div class="headermenu"><?php
+            echo $OUTPUT->lang_menu();
+            echo $PAGE->headingmenu;
+        ?></div>
+        <?php if ($hascustommenu) { ?>
+        <div id="custommenu"><?php echo $custommenu; ?></div>
+         <?php } ?>
+		</div>
     </div>
     
     
@@ -131,44 +112,42 @@ echo $OUTPUT->doctype() ?>
     <div id="page-content">
         <div id="region-main-box">
             <div id="region-post-box">
-            
+
                 <div id="region-main-wrap">
                     <div id="region-main">
                         <div class="region-content">
-                       		<?php echo $coursecontentheader; ?>
-                      	 	<?php echo $OUTPUT->main_content() ?>
-                      	 	<?php echo $coursecontentfooter; ?>
-                   		</div>
+                            <?php echo $OUTPUT->main_content() ?>
+                        </div>
                     </div>
                 </div>
-                
+
                 <?php if ($hassidepre OR (right_to_left() AND $hassidepost)) { ?>
-               <div id="region-pre" class="block-region">
-                   <div class="region-content">
+                <div id="region-pre" class="block-region">
+                    <div class="region-content">
+                            <?php
+                        if (!right_to_left()) {
+                            echo $OUTPUT->blocks_for_region('side-pre');
+                        } elseif ($hassidepost) {
+                            echo $OUTPUT->blocks_for_region('side-post');
+                    } ?>
+
+                    </div>
+                </div>
+                <?php } ?>
+
+                <?php if ($hassidepost OR (right_to_left() AND $hassidepre)) { ?>
+                <div id="region-post" class="block-region">
+                    <div class="region-content">
                            <?php
                        if (!right_to_left()) {
-                           echo $OUTPUT->blocks_for_region('side-pre');
-                       } elseif ($hassidepost) {
                            echo $OUTPUT->blocks_for_region('side-post');
-                   } ?>
+                       } elseif ($hassidepre) {
+                           echo $OUTPUT->blocks_for_region('side-pre');
+                    } ?>
+                    </div>
+                </div>
+                <?php } ?>
 
-                   </div>
-               </div>
-               <?php } ?>
-
-               <?php if ($hassidepost OR (right_to_left() AND $hassidepre)) { ?>
-               <div id="region-post" class="block-region">
-                   <div class="region-content">
-                          <?php
-                      if (!right_to_left()) {
-                          echo $OUTPUT->blocks_for_region('side-post');
-                      } elseif ($hassidepre) {
-                          echo $OUTPUT->blocks_for_region('side-pre');
-                   } ?>
-                   </div>
-               </div>
-               <?php } ?>
-                
             </div>
         </div>
     </div>
@@ -193,7 +172,7 @@ echo $OUTPUT->doctype() ?>
     </div>
 
 <!-- END OF FOOTER -->
-
+    <div class="clearfix"></div>
 </div>
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
 </body>
