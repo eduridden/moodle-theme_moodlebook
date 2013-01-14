@@ -1,5 +1,6 @@
 .block{
 	border-style:none;
+	width: 200px;
 }
 
 .block .calendar-controls .previous {
@@ -19,7 +20,7 @@
 	background:#f2f2f2;
 	color:#000;
 	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
-	font-size:11px;
+	font-size: 1em;
 	letter-spacing:-0.5px;
 	border-top:  1px solid #e2e2e2;
 	padding: 5px;
@@ -37,6 +38,7 @@
 
 .block .content{
 	padding:5px 10px;
+	font-size: .95em;
 }
 
 .block_login label {

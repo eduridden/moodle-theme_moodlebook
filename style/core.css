@@ -28,11 +28,24 @@ select,input,button,textarea{
 	width: 985px !important;
 	margin-left: auto;
 	margin-right: auto;
+	background: #fff;
 }
 
 #page-header-wrapper{
 	margin:0 50px;
 }
+
+
+#page-content #region-main-box {
+	border-left: 1px solid #b3b3b3;
+	border-bottom: 1px solid #b3b3b3;
+	padding-bottom: 10px !important;
+}
+
+#page-content{
+	border-right: 1px solid #b3b3b3;
+}
+
 
 #page-header{
 	float:none;
