@@ -35,6 +35,14 @@ function moodlebook_process_css($css, $theme) {
     }
     $css = moodlebook_set_backgroundcolor($css, $backgroundcolor);
 
+	if (!empty($theme->settings->headercolor)) {
+        $headercolor = $theme->settings->headercolor;
+    } else {
+        $headercolor = null;
+    }
+    $css = moodlebook_set_headercolor($css, $headercolor);
+
+
     if (!empty($theme->settings->customcss)) {
         $customcss = $theme->settings->customcss;
     } else {
@@ -57,6 +65,23 @@ function moodlebook_set_backgroundcolor($css, $backgroundcolor) {
     $replacement = $backgroundcolor;
     if (is_null($replacement)) {
         $replacement = '#EEEEEE';
+    }
+    $css = str_replace($tag, $replacement, $css);
+    return $css;
+}
+
+/**
+ * Sets the header background colour variable in CSS
+ *
+ * @param string $css
+ * @param mixed $headercolor
+ * @return string
+ */
+function moodlebook_set_headercolor($css, $headercolor) {
+    $tag = '[[setting:headercolor]]';
+    $replacement = $headercolor;
+    if (is_null($replacement)) {
+        $replacement = '#3e509c';
     }
     $css = str_replace($tag, $replacement, $css);
     return $css;

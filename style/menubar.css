@@ -16,7 +16,7 @@
 
 #menubar{
 	height:35px;
-	background-color:#3e509c;
+	background-color:[[setting:headercolor]];
 	margin:0;
 	text-shadow: 0 1px 0 #000;
 	vertical-align: middle;
@@ -26,7 +26,7 @@
 
 #menushell {
 	width: 985px !important;
-	background: #3e509c;
+	background: [[setting:headercolor]];
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -259,7 +259,7 @@ input#topadminsearchquery{
 }
 
 #menubar ul.dropdown ul *.open{
-	background-color:#39589a;
+	background-color:[[setting:headercolor]];
 	background-image:url([[pix:theme|ab-arrowover]]);
 	color:#D8DFEA;
 }

@@ -17,6 +17,15 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configcolourpicker($name, $title, $description, $default, $previewconfig);
     $settings->add($setting);
 
+	// Header colour setting
+    $name = 'theme_moodlebook/headercolor';
+    $title = get_string('headercolor','theme_moodlebook');
+    $description = get_string('headercolordesc', 'theme_moodlebook');
+    $default = '#3E509C';
+    $previewconfig = array('selector'=>'html', 'style'=>'headercolor');
+    $setting = new admin_setting_configcolourpicker($name, $title, $description, $default, $previewconfig);
+    $settings->add($setting);
+
     // Foot note setting
     $name = 'theme_moodlebook/footnote';
     $title = get_string('footnote','theme_moodlebook');
