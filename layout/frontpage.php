@@ -29,13 +29,13 @@ $bodyclasses = array();
 if ($showsidepre && !$showsidepost) {
     if (!right_to_left()) {
         $bodyclasses[] = 'side-pre-only';
-    } else {
+    }else{
         $bodyclasses[] = 'side-post-only';
     }
 } else if ($showsidepost && !$showsidepre) {
     if (!right_to_left()) {
         $bodyclasses[] = 'side-post-only';
-    } else {
+    }else{
         $bodyclasses[] = 'side-pre-only';
     }
 } else if (!$showsidepost && !$showsidepre) {
@@ -142,21 +142,32 @@ echo $OUTPUT->doctype() ?>
                     </div>
                 </div>
                 
-                <?php if ($hassidepre) { ?>
-                <div id="region-pre">
-                    <div class="region-content">
-                        <?php echo $OUTPUT->blocks_for_region('side-pre') ?>
-                    </div>
-                </div>
-                <?php } ?>
-                
-                <?php if ($hassidepost) { ?>
-                <div id="region-post">
-                    <div class="region-content">
-                        <?php echo $OUTPUT->blocks_for_region('side-post') ?>
-                    </div>
-                </div>
-                <?php } ?>
+                <?php if ($hassidepre OR (right_to_left() AND $hassidepost)) { ?>
+               <div id="region-pre" class="block-region">
+                   <div class="region-content">
+                           <?php
+                       if (!right_to_left()) {
+                           echo $OUTPUT->blocks_for_region('side-pre');
+                       } elseif ($hassidepost) {
+                           echo $OUTPUT->blocks_for_region('side-post');
+                   } ?>
+
+                   </div>
+               </div>
+               <?php } ?>
+
+               <?php if ($hassidepost OR (right_to_left() AND $hassidepre)) { ?>
+               <div id="region-post" class="block-region">
+                   <div class="region-content">
+                          <?php
+                      if (!right_to_left()) {
+                          echo $OUTPUT->blocks_for_region('side-post');
+                      } elseif ($hassidepre) {
+                          echo $OUTPUT->blocks_for_region('side-pre');
+                   } ?>
+                   </div>
+               </div>
+               <?php } ?>
                 
             </div>
         </div>
