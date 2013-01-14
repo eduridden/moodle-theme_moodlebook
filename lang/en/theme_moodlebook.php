@@ -37,6 +37,8 @@ $string['searchsettings'] = 'Search settings...';
 
 $string['backgroundcolor'] = 'Background colour';
 $string['backgroundcolordesc'] = 'This sets the background colour for the theme.';
+$string['headercolor'] = 'Header Background colour';
+$string['headercolordesc'] = 'This sets the background colour of the header.';
 $string['configtitle'] = 'moodlebook theme settings';
 $string['customcss'] = 'Custom CSS';
 $string['customcssdesc'] = 'Any CSS you enter here will be added to every page allowing your to easily customise this theme.';
