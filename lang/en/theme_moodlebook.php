@@ -54,3 +54,5 @@ $string['hidenavigationblock'] = 'Hide Navigation block';
 $string['hidenavigationblockdesc'] = 'This setting removes the standard Navigation block from all pages.';
 $string['yes'] = 'Yes';
 $string['no'] = 'No';
+$string['logo'] = 'logo';
+$string['logodesc'] = 'Change the logo of this theme by entering the URL to a new one (i.e., http://www.somesite/animage.png). As a reference, the default logo is 150px wide by 25px high. A transparent .png will work best.';

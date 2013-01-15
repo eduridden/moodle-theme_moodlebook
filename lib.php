@@ -28,7 +28,15 @@ function moodlebook_performance_output($param) {
  */
 function moodlebook_process_css($css, $theme) {
 
-    if (!empty($theme->settings->backgroundcolor)) {
+    // Set the logo image
+    if (!empty($theme->settings->logo)) {
+        $logo = $theme->settings->logo;
+    } else {
+        $logo = null;
+    }
+    $css = moodlebook_set_logo($css, $logo);
+
+	if (!empty($theme->settings->backgroundcolor)) {
         $backgroundcolor = $theme->settings->backgroundcolor;
     } else {
         $backgroundcolor = null;
@@ -51,6 +59,23 @@ function moodlebook_process_css($css, $theme) {
     $css = moodlebook_set_customcss($css, $customcss);
 
     return $css;
+}
+/**
+ * Sets the Custom logo variable in CSS
+ *
+ * @param string $css
+ * @param mixed $logo
+ * @return string
+ */
+function moodlebook_set_logo($css, $logo) {
+	global $OUTPUT;
+	$tag = '[[setting:logo]]';
+	$replacement = $logo;
+	if (is_null($replacement)) {
+ 		$replacement = $OUTPUT->pix_url('logo', 'theme');
+ 	}
+	$css = str_replace($tag, $replacement, $css);
+	return $css;
 }
 
 /**

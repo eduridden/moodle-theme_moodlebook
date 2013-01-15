@@ -89,12 +89,19 @@ select,input,button,textarea{
 	margin:0.85em 0;
 }
 
-#logo {
-	background: url([[pix:theme|logo]]) no-repeat top left;
+#logo, #nologo {
 	width:  150px;
 	height:  25px;
 	float: left;
 	margin-right: 10px;
+}
+
+#logo {
+	background: url([[setting:logo]]) no-repeat top left;
+}
+
+#nologo {
+	background: url([[pix:theme|logo]]) no-repeat top left;
 }
 /* @group Profile */
 

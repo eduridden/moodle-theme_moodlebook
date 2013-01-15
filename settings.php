@@ -7,8 +7,14 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
+	// logo image setting
+	$name = 'theme_moodlebook/logo';
+	$title = get_string('logo','theme_moodlebook');
+	$description = get_string('logodesc', 'theme_moodlebook');
+	$setting = new admin_setting_configtext($name, $title, $description, '', PARAM_URL);
+	$settings->add($setting);   
 
-    // Background colour setting
+	// Background colour setting
     $name = 'theme_moodlebook/backgroundcolor';
     $title = get_string('backgroundcolor','theme_moodlebook');
     $description = get_string('backgroundcolordesc', 'theme_moodlebook');

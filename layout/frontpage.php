@@ -58,7 +58,11 @@ echo $OUTPUT->doctype() ?>
 
     <div id="menubar">
     	<div id="menushell">
-    	<div id="logo"></div>
+    	<?php if (!empty($PAGE->theme->settings->logo)) { ?>
+			<div id="logo"></div>
+		<?php } else { ?>
+			<div id="nologo"></div>
+		<?php } ?>
     	<?php
     	if($this->page->pagelayout != 'maintenance') {
     	$topsettings = $this->page->get_renderer('theme_moodlebook','topsettings');
