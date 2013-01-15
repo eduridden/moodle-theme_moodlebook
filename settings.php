@@ -45,7 +45,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('hidesettingsblock','theme_moodlebook');
     $description = get_string('hidesettingsblockdesc', 'theme_moodlebook');
     $default = 1;
-    $choices = array(1=>'Yes', 0=>'No');
+    $choices = array(
+	1=> get_string('yes', 'theme_moodlebook'),
+	0=> get_string('no', 'theme_moodlebook')
+	);
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $settings->add($setting);
 
@@ -54,7 +57,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('hidenavigationblock','theme_moodlebook');
     $description = get_string('hidenavigationblockdesc', 'theme_moodlebook');
     $default = 0;
-    $choices = array(1=>'Yes', 0=>'No');
+    $choices = array(
+	1=> get_string('yes', 'theme_moodlebook'),
+	0=> get_string('no', 'theme_moodlebook')
+	);
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $settings->add($setting);
 }
